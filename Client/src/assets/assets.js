@@ -79,6 +79,20 @@ export const cities = [
     "Singapore",
     "New York",
     "London",
+    "Mumbai",
+    "Paris",
+    "Tokyo",
+    "Barcelona",
+    "Sydney",
+    "Los Angeles",
+    "Rome",
+    "Bangkok",
+    "Istanbul",
+    "Berlin",
+    "Amsterdam",
+    "Hong Kong",
+    "Toronto",
+    "San Francisco",
 ];
 
 // Exclusive Offers Dummy Data
