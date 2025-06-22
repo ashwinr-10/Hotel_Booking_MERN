@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from './components/Navbar'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Hero from './components/Hero';
+import Home from './pages/Home';
 
 const App = () => {
   const isOwnerPath = useLocation().pathname.includes("owner");
@@ -10,7 +11,7 @@ const App = () => {
       {!isOwnerPath && <Navbar />}
       <div className='min-h-[70vh]'>
       <Routes>
-        <Route path="/" element={<Hero />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </div>
     </div>
