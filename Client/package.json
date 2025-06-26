@@ -11,10 +11,14 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.32.0",
+    "@heroicons/react": "^2.2.0",
     "@tailwindcss/vite": "^4.1.10",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
+    "react-slick": "^0.30.3",
+    "slick-carousel": "^1.8.1",
+    "swiper": "^11.2.8",
     "tailwindcss": "^4.1.10"
   },
   "devDependencies": {

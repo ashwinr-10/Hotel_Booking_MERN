@@ -28,16 +28,16 @@ const Dashboard = () => {
            h-10'/>
             <div className='flex flex-col sm:ml-4 font-medium'>
                 <p className='text-blue-500 text-lg'>Total Revenue</p>
-                <p className='text-neutral-400 text-base'>$ {dashboardData.
-                    totalrevenue}</p>
+                <p className='text-neutral-400 text-base'>₹ {dashboardData.
+                    totalRevenue}</p>
             </div>
         </div>
       </div>
       {/* Recent Bookings */}
       <h2 className='text-xl text-blue-950/70 font-medium mb-5'>Recent Bookings</h2>
         <div className='w-full max-w-3xl text-left border border-gray-300
-            rounded-lg max-h-80 overflow-y-scroll'>
-                <table className='w-full'>
+            rounded-lg max-h-80 overflow-y-scroll overflow-x-auto'>
+                <table className='w-full min-w-[600px]'>
                     <thead className='bg-gray-50'>
                         <tr>
                             <th className='py-3 px-4 text-gray-800 font-medium'>User Name</th>
@@ -52,8 +52,7 @@ const Dashboard = () => {
                            <td className='py-3 px-4 text-gray-700 border-t border-gray-300'>
                             {item.user.username}
                             </td>
-                            <td className='py-3 px-4 text-gray-700 border-t border-gray-300
-                            max-sm:hidden'>
+                            <td className='py-3 px-4 text-gray-700 border-t border-gray-300'>
                             {item.room.roomType}
                             </td>
                             <td className='py-3 px-4 text-gray-700 border-t text-center border-gray-300'>
