@@ -131,8 +131,8 @@ export const roomCommonData = [
 // User Dummy Data
 export const userDummyData = {
     "_id": "user_2unqyL4diJFP1E3pIBnasc7w8hP",
-    "username": "Great Stack",
-    "email": "user.greatstack@gmail.com",
+    "username": "Ashwin",
+    "email": "user.ashwin@gmail.com",
     "image": "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzJ2N2c5YVpSSEFVYVUxbmVYZ2JkSVVuWnFzWSJ9",
     "role": "hotelOwner",
     "createdAt": "2025-03-25T09:29:16.367Z",
@@ -219,7 +219,7 @@ export const userBookingsDummyData = [
         "hotel": hotelDummyData,
         "checkInDate": "2025-04-30T00:00:00.000Z",
         "checkOutDate": "2025-05-01T00:00:00.000Z",
-        "totalPrice": 299,
+        "totalPrice": 1299,
         "guests": 1,
         "status": "pending",
         "paymentMethod": "Stripe",
@@ -235,7 +235,7 @@ export const userBookingsDummyData = [
         "hotel": hotelDummyData,
         "checkInDate": "2025-04-27T00:00:00.000Z",
         "checkOutDate": "2025-04-28T00:00:00.000Z",
-        "totalPrice": 399,
+        "totalPrice": 1399,
         "guests": 1,
         "status": "pending",
         "paymentMethod": "Pay At Hotel",
@@ -251,7 +251,7 @@ export const userBookingsDummyData = [
         "hotel": hotelDummyData,
         "checkInDate": "2025-04-11T00:00:00.000Z",
         "checkOutDate": "2025-04-12T00:00:00.000Z",
-        "totalPrice": 199,
+        "totalPrice": 1199,
         "guests": 1,
         "status": "pending",
         "paymentMethod": "Pay At Hotel",
@@ -265,7 +265,7 @@ export const userBookingsDummyData = [
 // Dashboard Dummy Data
 export const dashboardDummyData = {
     "totalBookings": 3,
-    "totalRevenue": 897,
+    "totalRevenue": 3897,
     "bookings": userBookingsDummyData
 }
 
