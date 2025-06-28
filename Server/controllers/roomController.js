@@ -1,12 +1,12 @@
 import Hotel from "../models/Hotel.js";
-import Room from "../models/Booking.js";
+import Room from "../models/Room.js";
 import { v2 as cloudinary } from "cloudinary";
 
 // API to create a new room for a hotel
 export const createRoom = async (req, res)=>{
     try {
         const {roomType, pricePerNight, amenities} = req.body;
-        const hotel = await Hotel.findOne({owner: req.auth.userId})
+        const hotel = await Hotel.findOne({owner: req.auth().userId})
         if (!hotel) return res.json({ success: false, message: "No Hotel found" });
         // upload images to cloudinary
         const uploadImages = req.files.map(async (file) => {
@@ -46,7 +46,7 @@ export const getRooms = async (req, res)=>{
 // API to get all rooms for specific hotel
 export const getOwnerRooms = async (req, res)=>{
     try {
-        const hotelData = await Hotel({owner: req.auth.userId})
+        const hotelData = await Hotel.findOne({owner: req.auth().userId})
         const rooms = await Room.find({hotel: hotelData._id.toString()}).populate
         ("hotel");
         res.json({success: true, rooms});
@@ -58,9 +58,28 @@ export const getOwnerRooms = async (req, res)=>{
 export const toggleRoomAvailability = async (req, res)=>{
     try {
         const { roomId } = req.body;
+        
+        // First check if user has a hotel
+        const hotel = await Hotel.findOne({owner: req.auth().userId});
+        if (!hotel) {
+            return res.json({ success: false, message: "No Hotel found" });
+        }
+        
+        // Find the room and check if it belongs to the user's hotel
         const roomData = await Room.findById(roomId);
+        if (!roomData) {
+            return res.json({ success: false, message: "Room not found" });
+        }
+        
+        // Check if the room belongs to the user's hotel
+        if (roomData.hotel.toString() !== hotel._id.toString()) {
+            return res.json({ success: false, message: "Unauthorized access to room" });
+        }
+        
+        // Toggle the availability
         roomData.isAvailable = !roomData.isAvailable;
         await roomData.save();
+        
         res.json({ success: true, message: "Room availability Updated" });
     } catch (error) {
         res.json({ success: false, message: error.message });

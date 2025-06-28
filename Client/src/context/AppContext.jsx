@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {useUser, useAuth} from "@clerk/clerk-react";
@@ -39,8 +39,15 @@ export const AppProvider = ({ children })=>{
     }
 }
 
+    // Call fetchUser when user is available
+    useEffect(() => {
+        if (user) {
+            fetchUser();
+        }
+    }, [user]);
+
     const value = {
-        currency, navigate, user, getToken, isOwner,
+        currency, navigate, user, getToken, isOwner, toast,
         setIsOwner, axios, showHotelReg, setShowHotelReg,searchedCities, setSearchedCities,
     }
     
