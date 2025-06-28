@@ -23,7 +23,7 @@ const FeaturedDestination = () => {
 
   return (
     <div className='flex flex-col items-center px-6 md:px-16 lg:px-24 bg-slate-50 py-20'>
-      <Title title="Featured Destinations" subTitle="Discover our handpicked selection of exceptional properties around the world, offering unparalleled luxury and unforgettable experiences." font="font-playfair"/>
+      <Title title="Featured Destinations" subTitle="Explore our curated collection of world-class destinations, featuring extraordinary properties that deliver unmatched luxury, style, and once-in-a-lifetime experiences." font="font-playfair"/>
       <div className='w-full mt-20 relative'>
         {/* Custom Navigation Buttons */}
         <button ref={prevRef} className="absolute z-10 left-0 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-[#49B9FF]/80 text-blue-600 rounded-full shadow p-2 transition-all hidden md:block">

@@ -117,6 +117,7 @@ const RoomDetails = () => {
     </div>
 
     <div className='max-w-3x1 border-y border-gray-300 my-15 py-10 text-gray-500'>
+        <h3>Accommodation Details</h3>
         <p>Guests will be allocated on the ground floor according to 
             availability. You get a comfortable Two bedroom apartment 
             has a true city feeling. The price quoted is for two guest, 

@@ -10,7 +10,7 @@ const Hero = () => {
       <p className='max-w-130 mt-2 text-sm md:text-base'>Extraordinary comfort and world-class service await at the most refined hotels and resorts.
          Begin your journey today.</p>
 
-    <form className='bg-white text-gray-500 rounded-lg px-4 md:px-6 py-4 mt-8 flex flex-col md:flex-row flex-wrap w-full max-w-2xl max-md:items-start gap-4 max-md:mx-auto xl:px-6 xl:w-auto xl:max-w-none xl:flex-nowrap'>
+    <form className='bg-white text-gray-500 rounded-lg px-4 md:px-6 py-4 mt-8 flex flex-col md:flex-row flex-wrap  max-w-2xl max-md:items-start gap-4 max-md:mx-auto xl:px-6 xl:w-auto xl:max-w-none xl:flex-nowrap'>
 
             <div>
                 <div className='flex items-center gap-2'>

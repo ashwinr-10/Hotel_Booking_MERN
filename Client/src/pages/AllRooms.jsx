@@ -50,7 +50,7 @@ const AllRooms = () => {
        <div className='flex flex-col items-start text-left'>
             <h1 className='font-playfair text-4xl md:text-[40px]'>Hotel Rooms</h1>
             <p className='text-sm md:text-base text-gray-500/90 mt-2
-            max-w-174'>Take advantage of our limited-time offers and special packages to enhance your stay and create unforgettable memories.</p>
+            max-w-174'>Discover thoughtfully designed rooms and suites, where comfort meets elegance. Enjoy exclusive offers and tailored packages that make every stay truly unforgettable.</p>
         </div>
 
         {roomsDummyData.map((room)=>(
