@@ -1,6 +1,7 @@
 import Room from "../models/Room.js";
 import Booking from "../models/Booking.js";
 import Hotel from "../models/Hotel.js";
+import transporter from "../config/nodemailer.js";
 
 // Function to Check Availablity of Room
 const checkAvailability = async ({checkInDate, checkOutDate, room })=>{
@@ -20,7 +21,7 @@ const checkAvailability = async ({checkInDate, checkOutDate, room })=>{
 //POST/api/bookings/check-availability
 export const checkAvailabilityAPI = async (req, res) =>{
     try {
-        const { room, checkInDate, checkoutDate } = req.body;
+        const { room, checkInDate, checkOutDate } = req.body;
         const isAvailable = await checkAvailability({checkInDate, checkOutDate,
         room});
         res.json({ success: true, isAvailable })
@@ -48,8 +49,8 @@ export const checkAvailabilityAPI = async (req, res) =>{
 
         // Calculate totalPrice based on nights
         const checkIn = new Date(checkInDate)
-        const checkout = new Date(checkOutDate)
-        const timeDiff = checkout.getTime() - checkIn.getTime();
+        const checkOut = new Date(checkOutDate)
+        const timeDiff = checkOut.getTime() - checkIn.getTime();
         const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
         totalPrice *= nights;
@@ -62,6 +63,31 @@ export const checkAvailabilityAPI = async (req, res) =>{
             checkOutDate,
             totalPrice,
         })
+        
+        const mailOptions = {
+        from: process.env.SENDER_EMAIL,
+        to: req.user.email,
+        subject: 'Hotel Booking Details',
+        html:
+            `<h2>Your Booking Details</h2>
+                <p>Dear ${req.user.username},</p>
+                <p>Thank you for your booking! Here are your details:</p>
+            <ul>
+                <li><strong>Booking ID:</strong> ${booking._id}</li>
+                <li><strong>Hotel Name:</strong> ${roomData.hotel.name}</li>
+                <li><strong>Location:</strong> ${roomData.hotel.address}</li>
+                <li><strong>Date:</strong> ${booking.checkInDate.toDateString()}
+                </li>
+                <li><strong>Booking Amount:</strong> ${process.env.VITE_CURRENCY ||
+                '₹'} ${booking.totalPrice} /night</li>
+            </ul>
+            <p>We look forward to welcoming you!</p>
+            <p>If you need to make any changes, feel free to contact us.</p>
+            `
+        }
+
+        await transporter.sendMail(mailOptions)
+
         res.json({ success: true, message: "Booking created successfully"})
      } catch (error) {
         console.error(error.message);
@@ -82,16 +108,6 @@ export const getUserBookings = async (req, res) => {
     }
 }
 
-export const getHotelBooking = async (req, res) => {
-    try {
-        const user = req.user._id;
-        const bookings = await Booking.find({user}).populate("room hotel").sort
-        ({createdAt: -1})
-        res.json({success: true, bookings})
-    } catch (error) {
-        res.json({ success: false, message: "Failed to fetch bookings" });
-    }
-}
 
 export const getHotelBookings = async (req, res) =>{
     try{
