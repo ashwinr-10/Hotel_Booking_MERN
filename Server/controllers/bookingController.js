@@ -78,15 +78,17 @@ export const checkAvailabilityAPI = async (req, res) =>{
                 <li><strong>Location:</strong> ${roomData.hotel.address}</li>
                 <li><strong>Date:</strong> ${booking.checkInDate.toDateString()}
                 </li>
-                <li><strong>Booking Amount:</strong> ${process.env.VITE_CURRENCY ||
-                '₹'} ${booking.totalPrice} /night</li>
+                <li><strong>Booking Amount:</strong> ${process.env.CURRENCY ||
+                '₹'} ${booking.totalPrice}</li>
             </ul>
             <p>We look forward to welcoming you!</p>
             <p>If you need to make any changes, feel free to contact us.</p>
             `
         }
 
+        console.log("Sending email to:", mailOptions.to, "from:", mailOptions.from);
         await transporter.sendMail(mailOptions)
+        console.log("Email sent!");
 
         res.json({ success: true, message: "Booking created successfully"})
      } catch (error) {

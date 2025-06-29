@@ -109,10 +109,12 @@ const Navbar = () => {
                         </a>
                     ))}
 
-                    {user && <button className="bg-[#49B9FF]/50 px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all"
-                        onClick={() => navigate('/owner')} >
-                        Dashboard
-                    </button>}
+                    {user && ( <button className="bg-[#49B9FF]/50 px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all"
+                        onClick={() => isOwner ? navigate('/owner') : setShowHotelReg(true)} >
+                        { isOwner ? 'Dashboard' : 'List Your Hotel'}
+                    </button>
+
+                )}
 
                     {!user && <button onClick={openSignIn} className="bg-black text-white px-8 py-2.5 rounded-full transition-all duration-500">
                         Login
