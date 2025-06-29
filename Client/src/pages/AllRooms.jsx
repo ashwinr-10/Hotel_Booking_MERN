@@ -72,8 +72,7 @@ const AllRooms = () => {
     }
     // Function to check if a room matches the selected room types
     const matchesRoomType = (room)=>{
-        return selectedFilters.roomType.length === 0 || selectedFilters.roomType.
-        includes (room.roomType);
+        return selectedFilters.roomType.length === 0 || selectedFilters.roomType.includes (room.roomType);
     }
 
     // Function to check if a room matches the selected price ranges
@@ -87,11 +86,11 @@ const AllRooms = () => {
     
     // Function to sort rooms based on the selected sort option
     const sortRooms = (a, b) =>{
-        if (selectedSort === 'Price Low to High') {
-            return a.pricePerNightb.pricePerNight;
+        if (selectedSort === 'Price: Low to High') {
+            return a.pricePerNight - b.pricePerNight;
         }
-        if (selectedSort === 'Price High to Low') {
-            return b.pricePerNighta.pricePerNight;
+        if (selectedSort === 'Price: High to Low') {
+            return b.pricePerNight - a.pricePerNight;
         }
         if(selectedSort === 'Newest First') {
             return new Date(b.createdAt) - new Date(a.createdAt)
@@ -103,7 +102,7 @@ const AllRooms = () => {
     const filterDestination = (room) => {
         const destination = searchParams.get('destination');
         if(!destination) return true;
-        return room.hotel.city.toLowerCase().includes (destination.toLowerCase())
+        return room.hotel.city.toLowerCase().includes(destination.toLowerCase())
     }
 
     // Filter and sort rooms based on the selected filters and sort option
@@ -196,7 +195,7 @@ const AllRooms = () => {
         <div className='px-5 pt-5'>
             <p className='font-medium text-gray-800 pb-2'>Price Range</p>
             {priceRanges.map((range, index) => (
-            <CheckBox key={index} label={`₹${currency} ${range}`} selected={selectedFilters.
+            <CheckBox key={index} label={`${currency} ${range}`} selected={selectedFilters.
             priceRange.includes(range)} onChange={(checked)=>handleFilterChange
             (checked, range, 'priceRange')} />
             ))}
