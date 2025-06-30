@@ -19,7 +19,7 @@ import 'slick-carousel/slick/slick.css';
 import {Toaster} from 'react-hot-toast';
 import 'slick-carousel/slick/slick-theme.css';
 import { useAppContext } from './context/AppContext';
-import Loader from './components/loader';
+import Loader from './components/Loader';
 
 
 const App = () => {
