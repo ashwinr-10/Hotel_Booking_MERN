@@ -77,24 +77,11 @@ export const assets = {
 }
 
 export const cities = [
-    "Dubai",
-    "Singapore",
-    "New York",
-    "London",
     "Mumbai",
     "Paris",
-    "Tokyo",
     "Barcelona",
-    "Sydney",
-    "Los Angeles",
-    "Rome",
-    "Bangkok",
-    "Istanbul",
-    "Berlin",
-    "Amsterdam",
-    "Hong Kong",
-    "Toronto",
-    "San Francisco",
+    "Tokyo",
+    "New York"
 ];
 
 // Exclusive Offers Dummy Data
