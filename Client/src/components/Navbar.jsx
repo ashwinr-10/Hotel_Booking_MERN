@@ -13,8 +13,8 @@ const Navbar = () => {
     const navLinks = [
         { name: 'Home', path: '/' },
         { name: 'Hotels', path: '/rooms' },
-        { name: 'Experience', path: '/' },
-        { name: 'About', path: '/' },
+        { name: 'Experience', path: '/experience' },
+        { name: 'About', path: '/about' },
     ];
 
 
@@ -27,23 +27,26 @@ const Navbar = () => {
 
     useEffect(() => {
 
-        if(location.pathname != '/'){
-            setIsScrolled(true);
-            return;
-        }else{
+        // Make navbar transparent on Home and About pages when not scrolled
+        if (location.pathname === '/' || location.pathname === '/about') {
             setIsScrolled(false);
+        } else {
+            setIsScrolled(true);
         }
-        setIsScrolled(prev => location.pathname !== '/'? true:prev);
-        
+
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 10);
+            if (location.pathname === '/' || location.pathname === '/about') {
+                setIsScrolled(window.scrollY > 10);
+            }
         };
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, [location.pathname]);
 
     return (
-        <nav className={`fixed top-0 left-0  w-full flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 transition-all duration-500 z-50 ${isScrolled ? "bg-white/80 shadow-md text-gray-700 backdrop-blur-lg py-3 md:py-4" : "py-4 md:py-6"}`}>
+        <nav className={`fixed top-0 left-0 w-full flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 transition-all duration-500 z-50
+            ${isScrolled ? "bg-white/80 shadow-md text-gray-700 backdrop-blur-lg py-3 md:py-4" : "bg-transparent text-white py-4 md:py-6"}
+        `}>
 
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-2">
@@ -53,10 +56,10 @@ const Navbar = () => {
                 {/* Desktop Nav */}
                 <div className="hidden md:flex items-center gap-4 lg:gap-8">
                     {navLinks.map((link, i) => (
-                        <a key={i} href={link.path} className={`group flex flex-col gap-0.5 ${isScrolled ? "text-gray-700" : "text-white"}`}>
+                        <Link key={i} to={link.path} className={`group flex flex-col gap-0.5 ${isScrolled ? "text-gray-700" : "text-white"}`}>
                             {link.name}
                             <div className={`${isScrolled ? "bg-gray-700" : "bg-white"} h-0.5 w-0 group-hover:w-full transition-all duration-300`} />
-                        </a>
+                        </Link>
                     ))}
                     
                     { user && (
@@ -70,7 +73,6 @@ const Navbar = () => {
 
                 {/* Desktop Right */}
                 <div className="hidden md:flex items-center gap-4">
-                    <img src={assets.searchIcon} alt="search" className={`${isScrolled && "invert"} h-7 transition-all duration-500`} />
                     {user ?
                     (user && <UserButton>
                         <UserButton.MenuItems>
@@ -104,9 +106,9 @@ const Navbar = () => {
                     </button>
 
                     {navLinks.map((link, i) => (
-                        <a key={i} href={link.path} onClick={() => setIsMenuOpen(false)}>
+                        <Link key={i} to={link.path} onClick={() => setIsMenuOpen(false)}>
                             {link.name}
-                        </a>
+                        </Link>
                     ))}
 
                     {user && ( <button className="bg-[#49B9FF]/50 px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all"
