@@ -1,3 +1,4 @@
+import User from '../models/User.js';
 
 //GET/api/user/
 export const getUserData = async (req, res)=>{
