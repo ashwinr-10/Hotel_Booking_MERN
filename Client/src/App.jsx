@@ -19,6 +19,7 @@ import 'slick-carousel/slick/slick.css';
 import {Toaster} from 'react-hot-toast';
 import 'slick-carousel/slick/slick-theme.css';
 import { useAppContext } from './context/AppContext';
+import Loader from './components/loader';
 
 
 const App = () => {
@@ -37,6 +38,8 @@ const App = () => {
         <Route path="/rooms" element={<AllRooms />} />
         <Route path="/rooms/:id" element={<RoomDetails />} />
         <Route path="/my-bookings" element={<MyBookings />} />
+        <Route path="/loader/:nextUrl" element={<Loader />} />
+        
         <Route path="/owner" element={<Layout />}>
           <Route index element={<Dashboard/>} />
           <Route path="add-room" element={<AddRoom/>} />
