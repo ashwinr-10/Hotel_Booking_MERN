@@ -1,27 +1,21 @@
-version: "3.9"
-
 services:
   server:
-    build: ./server
-    container_name: app-server
-    restart: always
+    image: ashwinr10/easystay-server
+    container_name: easystay-server
     ports:
       - "3000:3000"
     env_file:
-      - ./server/.env
-    environment:
-      NODE_ENV: production
+      - ./Server/.env
+    restart: always
 
   client:
     build:
-      context: ./client
+      context: ./Client
+      dockerfile: Dockerfile
       args:
         VITE_CLERK_PUBLISHABLE_KEY: ${VITE_CLERK_PUBLISHABLE_KEY}
         VITE_BACKEND_URL: ${VITE_BACKEND_URL}
         VITE_CURRENCY: ${VITE_CURRENCY}
-    env_file:
-      - ./client/.env
+    image: ashwinr10/easystay-client
     ports:
       - "3001:80"
-    depends_on:
-      - server
