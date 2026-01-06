@@ -177,26 +177,26 @@ CLOUDINARY_API_SECRET=your_cloudinary_secret
 
 # Clerk Authentication
 CLERK_SECRET_KEY=your_clerk_secret_key
+CLERK_PUBLISHABLE_KEY=key
+CLERK_WEBHOOK_SECRET=your_clerk_webhook_secret
 
 # Stripe Payment
+STRIPE_PUBLISHABLE_KEY=key
 STRIPE_SECRET_KEY=your_stripe_secret_key
 STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
 
 # Email Configuration (Brevo SMTP)
+SENDER_EMAIL=email
 SMTP_USER=your_brevo_smtp_user
 SMTP_PASS=your_brevo_smtp_password
+CURRENCY=₹
 ```
 
 ### Frontend (.env in Client directory)
 ```bash
-# API Configuration
-VITE_APP_API_URL=http://localhost:3000
-
-# Authentication
 VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-
-# Payment
-VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+VITE_BACKEND_URL=backend_url
+VITE_CURRENCY=₹
 ```
 
 
