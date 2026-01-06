@@ -1,2 +1,7 @@
 /node_modules
 .env
+*.pid
+*.seed
+*.log
+.dockerignore
+docker-compose.override.yml

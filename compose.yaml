@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  server:
+    build: ./server
+    container_name: app-server
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./server/.env
+    environment:
+      NODE_ENV: production
+
+  client:
+    build:
+      context: ./client
+      args:
+        VITE_CLERK_PUBLISHABLE_KEY: ${VITE_CLERK_PUBLISHABLE_KEY}
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+        VITE_CURRENCY: ${VITE_CURRENCY}
+    env_file:
+      - ./client/.env
+    ports:
+      - "3001:80"
+    depends_on:
+      - server
