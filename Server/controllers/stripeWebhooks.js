@@ -23,6 +23,10 @@ export const stripeWebhooks = async (request, response)=>{
         const { bookingId} = session.data[0].metadata;
         // Mark Payment as Paid
         await Booking.findByIdAndUpdate(bookingId, {isPaid: true, paymentMethod: "Stripe"})
+        const booking = await Booking.findById(bookingId);
+
+        await redisClient.del(`bookings_user:${booking.user}`);
+        await redisClient.del(`hotel_dashboard:${booking.hotel}`);
     }else{
         console.log("Unhandled event type:", event.type)
 
