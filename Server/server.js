@@ -35,11 +35,16 @@ app.use('/api/rooms', roomRouter)
 app.use('/api/bookings', bookingRouter)
 
 app.get("/redis-test", async (req, res) => {
-  await redisClient.set("testKey", "Redis Working!");
-  const data = await redisClient.get("testKey");
+  if (!redisClient) {
+    return res.json({ message: "Redis not connected" });
+  }
 
-  res.json({ message: data });
+  await redisClient.set("test", "hello from upstash");
+  const value = await redisClient.get("test");
+
+  res.json({ value });
 });
+
 
 const PORT = process.env.PORT || 3000;
 
