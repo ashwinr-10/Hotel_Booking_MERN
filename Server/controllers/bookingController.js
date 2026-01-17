@@ -3,6 +3,7 @@ import Booking from "../models/Booking.js";
 import Hotel from "../models/Hotel.js";
 import transporter from "../config/nodemailer.js";
 import stripe from 'stripe' ;                                                                    
+import redisClient from "../config/redis.js";
 
 // Function to Check Availablity of Room
 const checkAvailability = async ({checkInDate, checkOutDate, room })=>{
@@ -23,13 +24,32 @@ const checkAvailability = async ({checkInDate, checkOutDate, room })=>{
 export const checkAvailabilityAPI = async (req, res) =>{
     try {
         const { room, checkInDate, checkOutDate } = req.body;
-        const isAvailable = await checkAvailability({checkInDate, checkOutDate,
-        room});
-        res.json({ success: true, isAvailable })
+
+        const cacheKey = `availability:${room}:${checkInDate}:${checkOutDate}`;
+
+        const cached = await redisClient.get(cacheKey);
+
+        if (cached) {
+            return res.json(JSON.parse(cached));
+        }
+
+        const isAvailable = await checkAvailability({
+            checkInDate,
+            checkOutDate,
+            room
+        });
+
+        const responseData = { success: true, isAvailable };
+
+        await redisClient.setEx(cacheKey, 300, JSON.stringify(responseData));
+
+        res.json(responseData);
+
     } catch (error) {
         res.json({ success: false, message: error.message });
     }
 }
+
 
 // API to create a new booking
 //POST/api/bookings/book
@@ -90,6 +110,9 @@ export const checkAvailabilityAPI = async (req, res) =>{
         console.log("Sending email to:", mailOptions.to, "from:", mailOptions.from);
         await transporter.sendMail(mailOptions)
         console.log("Email sent!");
+        await redisClient.del(`bookings_user:${req.user._id}`);
+        await redisClient.del(`hotel_dashboard:${roomData.hotel.owner}`);
+        await redisClient.del("all_rooms");
 
         res.json({ success: true, message: "Booking created successfully"})
      } catch (error) {
@@ -102,35 +125,75 @@ export const checkAvailabilityAPI = async (req, res) =>{
 //GET/api/bookings/user
 export const getUserBookings = async (req, res) => {
     try {
-        const user = req.user._id;
-        const bookings = await Booking.find({user}).populate("room hotel").sort
-        ({createdAt: -1})
-        res.json({success: true, bookings})
+        const userId = req.user._id;
+
+        const cacheKey = `bookings_user:${userId}`;
+
+        const cached = await redisClient.get(cacheKey);
+
+        if (cached) {
+            return res.json(JSON.parse(cached));
+        }
+
+        const bookings = await Booking.find({user: userId})
+            .populate("room hotel")
+            .sort({createdAt: -1})
+
+        const responseData = {success: true, bookings};
+
+        await redisClient.setEx(cacheKey, 900, JSON.stringify(responseData));
+
+        res.json(responseData)
+
     } catch (error) {
         res.json({ success: false, message: "Failed to fetch bookings" });
     }
 }
 
 
+
 export const getHotelBookings = async (req, res) =>{
     try{
-        const hotel = await Hotel.findOne({owner: req.auth().userId});
-    
+        const userId = req.auth().userId;
+
+        const cacheKey = `hotel_dashboard:${userId}`;
+
+        const cached = await redisClient.get(cacheKey);
+
+        if (cached) {
+            return res.json(JSON.parse(cached));
+        }
+
+        const hotel = await Hotel.findOne({owner: userId});
+
         if(!hotel){
             return res.json({ success: false, message: "No Hotel found" });
         }
-        const bookings = await Booking.find({hotel: hotel._id}).populate("room hotel user").sort({ createdAt: -1});
-        // Total Bookings
+
+        const bookings = await Booking.find({hotel: hotel._id})
+            .populate("room hotel user")
+            .sort({ createdAt: -1});
+
         const totalBookings = bookings.length;
-        // Total Revenue
-        const totalRevenue = bookings.reduce((acc, booking)=>acc + booking.totalPrice, 0)
-        
-        res.json({success: true, dashboardData: {totalBookings, totalRevenue,
-        bookings}})
+
+        const totalRevenue = bookings.reduce(
+            (acc, booking)=>acc + booking.totalPrice, 0
+        )
+
+        const responseData = {
+            success: true,
+            dashboardData: {totalBookings, totalRevenue, bookings}
+        };
+
+        await redisClient.setEx(cacheKey, 600, JSON.stringify(responseData));
+
+        res.json(responseData)
+
     } catch (error) {
         res.json({success: false, message: "Failed to fetch bookings"})
     }
 }
+
 
 export const stripePayment = async (req, res)=>{
     try {
@@ -164,6 +227,8 @@ export const stripePayment = async (req, res)=>{
                 bookingId,
             }
         })
+        await redisClient.del(`bookings_user:${req.user._id}`);
+
         res.json({success: true, url: session.url})
 
     } catch (error){

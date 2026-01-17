@@ -10,7 +10,7 @@ import connectCloudinary from './config/cloudinary.js';
 import roomRouter from './routes/roomRouter.js';
 import bookingRouter from './routes/BookingRoutes.js';
 import { stripeWebhooks } from './controllers/stripeWebhooks.js';
-
+import redisClient from "./config/redis.js";
 connectDB()
 connectCloudinary()
 const app = express()
@@ -33,6 +33,13 @@ app.use('/api/user', userRouter)
 app.use('/api/hotels', hotelRouter)
 app.use('/api/rooms', roomRouter)
 app.use('/api/bookings', bookingRouter)
+
+app.get("/redis-test", async (req, res) => {
+  await redisClient.set("testKey", "Redis Working!");
+  const data = await redisClient.get("testKey");
+
+  res.json({ message: data });
+});
 
 const PORT = process.env.PORT || 3000;
 
